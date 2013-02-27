@@ -194,7 +194,7 @@ package ru.kutu.grind.views.mediators {
 							break;
 						}
 						if (Math.abs(preferBitrate - br) < minDiffBitrate) {
-							minDiffBitrate = Math.abs(preferHeight - br);
+							minDiffBitrate = Math.abs(preferBitrate - br);
 							preferIndex = streamItems.indexOf(dynamicItem);
 						}
 					}
