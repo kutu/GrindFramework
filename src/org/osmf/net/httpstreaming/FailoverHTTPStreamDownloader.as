@@ -32,6 +32,7 @@ package org.osmf.net.httpstreaming
 	import flash.utils.ByteArray;
 	import flash.utils.IDataInput;
 	import flash.utils.Timer;
+	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
 	
 	import org.osmf.events.HTTPStreamingEvent;
@@ -135,6 +136,7 @@ package org.osmf.net.httpstreaming
 			_isComplete = false;
 			_hasData = false;
 			_hasErrors = false;
+			clearTimeout(_retryTimeout);
 			
 			_dispatcher = dispatcher;
 			if (_savedBytes == null)
@@ -199,6 +201,7 @@ package org.osmf.net.httpstreaming
 			_hasData = false;
 			_hasErrors = false;
 			_request = null;
+			clearTimeout(_retryTimeout);
 			
 			if (_timeoutTimer != null)
 			{
@@ -427,14 +430,16 @@ package org.osmf.net.httpstreaming
 				}
 //				_currentRetry = 0;
 
-				_downloadBytesCount = event.bytesTotal;
-				CONFIG::LOGGING
-				{
-					logger.debug("Loaded " + event.bytesLoaded + " bytes from " + _downloadBytesCount + " bytes.");
-				}
+//				_downloadBytesCount = event.bytesTotal;
+//				CONFIG::LOGGING
+//				{
+//					logger.debug("Loaded " + event.bytesLoaded + " bytes from " + _downloadBytesCount + " bytes.");
+//				}
 			}
 			
 			_hasData = true;			
+			// capability to download files with content-transfer: chunked
+			_downloadBytesCount = event.bytesTotal == 0 ? event.bytesLoaded : event.bytesTotal;
 			
 			if(_dispatcher != null)
 			{
@@ -466,16 +471,20 @@ package org.osmf.net.httpstreaming
 			}
 			
 			// failover enhancement
-			if (OSMFSettings.hdsMaximumRetries > -1) {
-				_currentRetry++;
-			}
-			if (OSMFSettings.hdsMaximumRetries > 0 && _currentRetry < OSMFSettings.hdsMaximumRetries) {
-				CONFIG::LOGGING {
-					logger.error("Error while trying to download [" + _request.url + "]");
-					logger.error("Retrying the download.");
+			if (!(event is SecurityErrorEvent)) {
+				if (OSMFSettings.hdsMaximumRetries > -1) {
+					_currentRetry++;
 				}
-				setTimeout(open, 1000, _request, _dispatcher, _timeoutInterval);
-				return;
+				if (OSMFSettings.hdsMaximumRetries > 0 && _currentRetry < OSMFSettings.hdsMaximumRetries) {
+					CONFIG::LOGGING {
+						logger.error("Error while trying to download [" + _request.url + "]");
+						logger.error("Retrying the download.");
+					}
+					if (_request && _dispatcher) {
+						_retryTimeout = setTimeout(open, 1000, _request, _dispatcher, _timeoutInterval);
+					}
+					return;
+				}
 			}
 			// end failover enhancement
 			
@@ -509,7 +518,7 @@ package org.osmf.net.httpstreaming
 					0, // fragment duration
 					null, // scriptDataObject
 					FLVTagScriptDataMode.NORMAL, // scriptDataMode
-					_request.url, // urlString
+					_request ? _request.url : null, // urlString
 					0, // bytesDownloaded
 					reason, // reason
 					this); // downloader
@@ -595,6 +604,7 @@ package org.osmf.net.httpstreaming
 		private var _timeoutTimer:Timer = null;
 		private var _timeoutInterval:Number = 1000;
 		private var _currentRetry:Number = 0;
+		private var _retryTimeout:uint;
 		
 		CONFIG::LOGGING
 		{

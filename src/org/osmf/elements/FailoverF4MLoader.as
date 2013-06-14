@@ -118,6 +118,9 @@ package org.osmf.elements
 			function onError(event:ErrorEvent):void
 			{
 				retries--;
+				if (event is SecurityErrorEvent) {
+					retries = 0;
+				}
 				if (retries <= 0) {
 					manifestLoader.removeEventListener(Event.COMPLETE, onComplete);
 					manifestLoader.removeEventListener(IOErrorEvent.IO_ERROR, onError);
