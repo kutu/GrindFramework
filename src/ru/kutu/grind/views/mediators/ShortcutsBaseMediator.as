@@ -2,19 +2,18 @@ package ru.kutu.grind.views.mediators {
 	
 	import flash.display.StageDisplayState;
 	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
 	import flash.ui.Keyboard;
 	import flash.utils.getTimer;
 	
 	import org.osmf.layout.LayoutMetadata;
 	import org.osmf.layout.ScaleMode;
-	import org.osmf.media.videoClasses.VideoSurface;
 	import org.osmf.net.StreamType;
 	
 	import robotlegs.bender.extensions.contextView.ContextView;
 	
-	import ru.kutu.grind.media.GrindMediaPlayerBase;
 	import ru.kutu.grind.config.PlayerConfiguration;
+	import ru.kutu.grind.events.PlayerViewEvent;
+	import ru.kutu.grind.media.GrindMediaPlayerBase;
 	import ru.kutu.grind.views.api.IPlayerView;
 	
 	public class ShortcutsBaseMediator extends MediaControlBaseMediator {
@@ -27,14 +26,12 @@ package ru.kutu.grind.views.mediators {
 		
 		override public function initialize():void {
 			super.initialize();
-			addViewListener(MouseEvent.CLICK, onClick);
+			addContextListener(PlayerViewEvent.CLICK, onPlayerVideoAreaClick);
 			contextView.view.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			contextView.view.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 		}
 		
-		protected function onClick(event:MouseEvent):void {
-			if (event.target != view && !(event.target is VideoSurface)) return;
-			
+		protected function onPlayerVideoAreaClick(event:PlayerViewEvent):void {
 			// play / pause
 			if (player is GrindMediaPlayerBase) {
 				var streamType:String = (player as GrindMediaPlayerBase).streamType;

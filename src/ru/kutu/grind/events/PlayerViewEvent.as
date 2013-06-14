@@ -5,6 +5,7 @@ package ru.kutu.grind.events {
 	public class PlayerViewEvent extends Event {
 
 		public static const RESIZE:String = "playerView.resize";
+		public static const CLICK:String = "playerView.click";
 
 		public function PlayerViewEvent(type:String, bubbles:Boolean = false, cancelable:Boolean = false) {
 			super(type, bubbles, cancelable);

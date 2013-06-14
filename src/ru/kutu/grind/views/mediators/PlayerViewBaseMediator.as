@@ -1,6 +1,8 @@
 package ru.kutu.grind.views.mediators  {
 
+	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.external.ExternalInterface;
 	
 	import org.osmf.containers.MediaContainer;
@@ -37,6 +39,8 @@ package ru.kutu.grind.views.mediators  {
 		[Inject] public var player:MediaPlayer;
 		[Inject] public var factory:MediaFactory;
 
+		protected var hitArea:Sprite = new Sprite();
+		protected var videoContainer:MediaContainer = new MediaContainer();
 		protected var mediaContainer:MediaContainer = new MediaContainer();
 
 		override public function initialize():void {
@@ -88,6 +92,17 @@ package ru.kutu.grind.views.mediators  {
 		}
 
 		protected function initializeView():void {
+			videoContainer.clipChildren = true;
+			videoContainer.layoutMetadata.percentWidth = 100;
+			videoContainer.layoutMetadata.percentHeight = 100;
+			videoContainer.mouseEnabled = false;
+			videoContainer.mouseChildren = false;
+			view.mediaPlayerContainer.addChild(videoContainer);
+			
+			hitArea.alpha = 0;
+			hitArea.addEventListener(MouseEvent.CLICK, onVideoAreaClick);
+			view.mediaPlayerContainer.addChild(hitArea);
+			
 			mediaContainer.clipChildren = true;
 			mediaContainer.layoutMetadata.percentWidth = 100;
 			mediaContainer.layoutMetadata.percentHeight = 100;
@@ -95,6 +110,11 @@ package ru.kutu.grind.views.mediators  {
 
 			addViewListener(PlayerViewEvent.RESIZE, onViewResize, PlayerViewEvent);
 			onViewResize();
+		}
+		
+		protected function onVideoAreaClick(event:MouseEvent):void {
+			event.stopPropagation();
+			dispatch(new PlayerViewEvent(PlayerViewEvent.CLICK));
 		}
 
 		protected function loadMedia():void {
@@ -121,17 +141,22 @@ package ru.kutu.grind.views.mediators  {
 			layoutMetadata.percentHeight = 100;
 			layoutMetadata.index = 1;
 
-			if (player.media && mediaContainer.containsMediaElement(player.media)) {
-				mediaContainer.removeMediaElement(player.media);
+			if (player.media && videoContainer.containsMediaElement(player.media)) {
+				videoContainer.removeMediaElement(player.media);
 			}
-			mediaContainer.addMediaElement(media);
+			videoContainer.addMediaElement(media);
 			player.media = media;
 		}
 
 		protected function onViewResize(event:Event = null):void {
 			if (mediaContainer) {
-				mediaContainer.width = view.mediaPlayerContainer.width;
-				mediaContainer.height = view.mediaPlayerContainer.height;
+				const w:Number = view.mediaPlayerContainer.width;
+				const h:Number = view.mediaPlayerContainer.height;
+				videoContainer.width = mediaContainer.width = w;
+				videoContainer.height = mediaContainer.height = h;
+				hitArea.graphics.clear();
+				hitArea.graphics.beginFill(0);
+				hitArea.graphics.drawRect(0, 0, w, h);
 			}
 		}
 
