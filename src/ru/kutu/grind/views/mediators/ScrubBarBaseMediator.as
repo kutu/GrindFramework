@@ -4,6 +4,7 @@ package ru.kutu.grind.views.mediators {
 	import org.osmf.events.MediaPlayerStateChangeEvent;
 	import org.osmf.events.SeekEvent;
 	import org.osmf.events.TimeEvent;
+	import org.osmf.media.MediaElement;
 	import org.osmf.media.MediaPlayerState;
 	import org.osmf.net.StreamType;
 	import org.osmf.traits.MediaTraitType;
@@ -22,6 +23,7 @@ package ru.kutu.grind.views.mediators {
 		protected var isStartPlaying:Boolean;
 		protected var sliderChanging:Boolean;
 		protected var totalBytes:Number;
+		protected var loadedBytes:Number;
 		
 		private var _requiredTraits:Vector.<String> = new <String>[MediaTraitType.TIME, MediaTraitType.SEEK];
 		
@@ -39,6 +41,11 @@ package ru.kutu.grind.views.mediators {
 			addViewListener(ScrubBarEvent.SLIDER_CHANGE_END, onSliderChangeEnd, ScrubBarEvent);
 			addViewListener(ScrubBarEvent.SLIDER_CHANGE, onSliderChange, ScrubBarEvent);
 			mediatorMap.mediate(view.tip);
+		}
+		
+		override protected function processMediaElementChange(oldMediaElement:MediaElement):void {
+			super.processMediaElementChange(oldMediaElement);
+			totalBytes = loadedBytes = NaN;
 		}
 		
 		protected function onMediaPlayerStateChange(event:MediaPlayerStateChangeEvent):void {
@@ -87,9 +94,12 @@ package ru.kutu.grind.views.mediators {
 
 		protected function onBytesTotalChange(event:LoadEvent):void {
 			totalBytes = event.bytes;
+			if (isNaN(totalBytes) || totalBytes <= 0 || isNaN(loadedBytes)) return;
+			view.percentLoaded = loadedBytes / totalBytes;
 		}
 		protected function onBytesLoadedChange(event:LoadEvent):void {
-			if (isNaN(totalBytes) || totalBytes <= 0) return;
+			loadedBytes = event.bytes;
+			if (isNaN(totalBytes) || totalBytes <= 0 || isNaN(loadedBytes)) return;
 			view.percentLoaded = event.bytes / totalBytes;
 		}
 		
