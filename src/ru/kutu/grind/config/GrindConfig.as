@@ -2,6 +2,7 @@ package ru.kutu.grind.config  {
 	
 	import flash.external.ExternalInterface;
 	
+	import org.osmf.logging.Log;
 	import org.osmf.media.MediaFactory;
 	import org.osmf.media.MediaPlayer;
 	import org.osmf.media.MediaResourceBase;
@@ -14,6 +15,8 @@ package ru.kutu.grind.config  {
 	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.framework.api.IContext;
 	
+	import ru.kutu.grind.log.GrindLoggerFactory;
+	import ru.kutu.grind.log.JSLogTarget;
 	import ru.kutu.grind.media.GrindMediaFactoryBase;
 	import ru.kutu.grind.media.GrindMediaPlayerBase;
 	
@@ -23,8 +26,12 @@ package ru.kutu.grind.config  {
 		[Inject] public var context:IContext;
 		
 		public function configure():void {
-			if (ExternalInterface.available) {
-				context.addLogTarget(new JSLogTarget());
+			CONFIG::LOGGING {
+				if (ExternalInterface.available) {
+					context.addLogTarget(new JSLogTarget());
+				}
+				Log.loggerFactory = new GrindLoggerFactory();
+				injector.injectInto(Log.loggerFactory);
 			}
 			configuration();
 		}

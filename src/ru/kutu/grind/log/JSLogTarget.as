@@ -1,4 +1,4 @@
-package ru.kutu.grind.config {
+package ru.kutu.grind.log {
 	
 	import flash.external.ExternalInterface;
 	
