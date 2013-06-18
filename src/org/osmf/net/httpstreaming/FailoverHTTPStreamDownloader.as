@@ -166,7 +166,7 @@ package org.osmf.net.httpstreaming
 				_request = request;
 				CONFIG::LOGGING
 				{
-					logger.debug("Loading (timeout=" + _timeoutInterval + ", retry=" + _currentRetry + "):" + _request.url.toString());
+					logger.debug("Loading (timeout=" + _timeoutInterval + ", retry=" + _currentRetry + "): " + _request.url.toString());
 				}
 
 				_downloadBeginDate = null;
@@ -190,7 +190,7 @@ package org.osmf.net.httpstreaming
 			{
 				if (_request != null)
 				{
-					logger.debug("Closing :" + _request.url.toString());
+					logger.debug("Closing: " + _request.url.toString());
 				}
 			}
 			
