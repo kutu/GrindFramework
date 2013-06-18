@@ -2,9 +2,7 @@ package ru.kutu.grind.views.mediators {
 	
 	import org.osmf.events.TimeEvent;
 	import org.osmf.media.MediaElement;
-	import org.osmf.net.StreamType;
 	
-	import ru.kutu.grind.media.GrindMediaPlayerBase;
 	import ru.kutu.grind.utils.FormatTime;
 	import ru.kutu.grind.views.api.ITimeInfo;
 	

@@ -1,20 +1,9 @@
 package ru.kutu.grind.views.mediators {
 
-	import flash.events.Event;
 	import flash.events.FullScreenEvent;
-	import flash.events.MouseEvent;
-	import flash.events.TimerEvent;
-	import flash.ui.Mouse;
-	import flash.utils.Dictionary;
-	import flash.utils.Timer;
 	
 	import org.osmf.events.MediaPlayerStateChangeEvent;
-	import org.osmf.events.MetadataEvent;
-	import org.osmf.events.PlayEvent;
-	import org.osmf.media.MediaElement;
 	import org.osmf.media.MediaPlayerState;
-	import org.osmf.traits.PlayState;
-	import org.swiftsuspenders.Injector;
 	
 	import robotlegs.bender.extensions.contextView.ContextView;
 	

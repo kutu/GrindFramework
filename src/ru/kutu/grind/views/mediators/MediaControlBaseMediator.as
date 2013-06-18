@@ -9,7 +9,6 @@ package ru.kutu.grind.views.mediators {
 	
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	
-	import ru.kutu.grind.media.GrindMediaPlayerBase;
 	import ru.kutu.grind.events.MediaElementChangeEvent;
 
 	public class MediaControlBaseMediator extends Mediator {
