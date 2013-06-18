@@ -35,20 +35,16 @@ package ru.kutu.grind.views.mediators  {
 		}
 		
 		protected function onMediaPlayerStateChange(event:MediaPlayerStateChangeEvent):void {
-//			trace(event.state);
 			switch (event.state) {
 				case MediaPlayerState.UNINITIALIZED:
 					view.initializing();
-//					view.setCurrentState("initializing");
 					break;
 				case MediaPlayerState.PLAYBACK_ERROR:
 					view.error();
-//					view.setCurrentState("error");
 					break;
 				case MediaPlayerState.PLAYING:
 				case MediaPlayerState.READY:
 					view.ready();
-//					view.setCurrentState("ready");
 					break;
 			}
 		}
