@@ -212,27 +212,6 @@ package org.osmf.player.chrome.configuration
 			return false;
 		}
 		
-		/**
-		 * Validates an URL
-		 */ 
-		public static function validatePluginURLProperty(paramName:String, paramValue:String, isPluginUrl:Boolean = false):Boolean
-		{
-			// Validate the URL using the OSMF private api. We don't know if it's the best approach,
-			// but we choose to do so because we want this validation to be consistent with the OSMF framework.			
-			var url:URL = new URL(paramValue);
-			// Checking the host name is enough for absolute paths.
-			// For relative paths we only check that it's actually a swf file name if we are reffering to a plugin.
-			if ( (url.absolute && url.host.length>0) 
-				|| ( isPluginUrl 
-					? paramValue.match(/^[^:]+swf$/) 
-					: (url.path == url.rawUrl && paramValue.search("javascript") != 0)
-				) )
-			{
-				return true;
-			}
-			return false;
-		}
-		
 		
 		private static const TRUE:String = "true";
 		private static const FALSE:String = "false";
