@@ -106,6 +106,7 @@ package ru.kutu.grind.views.mediators  {
 			mediaContainer.clipChildren = true;
 			mediaContainer.layoutMetadata.percentWidth = 100;
 			mediaContainer.layoutMetadata.percentHeight = 100;
+			mediaContainer.mouseEnabled = false;
 			view.mediaPlayerContainer.addChild(mediaContainer);
 
 			addViewListener(PlayerViewEvent.RESIZE, onViewResize, PlayerViewEvent);
