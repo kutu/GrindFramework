@@ -14,16 +14,16 @@ package ru.kutu.grind.views.mediators {
 	import org.osmf.media.MediaElement;
 	import org.osmf.media.MediaPlayerState;
 	import org.osmf.traits.PlayState;
-	import org.swiftsuspenders.Injector;
 	
 	import robotlegs.bender.extensions.contextView.ContextView;
+	import robotlegs.bender.framework.api.IInjector;
 	
 	import ru.kutu.grind.config.PlayerConfiguration;
 	import ru.kutu.grind.events.AutoHideEvent;
 	
 	public class AutoHideBaseMediator extends MediaControlBaseMediator {
 		
-		[Inject] public var injector:Injector;
+		[Inject] public var injector:IInjector;
 		[Inject] public var contextView:ContextView;
 		
 		protected var autoHide:Boolean;

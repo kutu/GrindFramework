@@ -10,10 +10,10 @@ package ru.kutu.grind.config  {
 	import org.osmf.player.configuration.ConfigurationLoader;
 	import org.osmf.player.configuration.ConfigurationProxy;
 	import org.osmf.player.configuration.ConfigurationXMLDeserializer;
-	import org.swiftsuspenders.Injector;
 	
 	import robotlegs.bender.framework.api.IConfig;
 	import robotlegs.bender.framework.api.IContext;
+	import robotlegs.bender.framework.api.IInjector;
 	
 	import ru.kutu.grind.log.GrindLoggerFactory;
 	import ru.kutu.grind.log.JSLogTarget;
@@ -22,7 +22,7 @@ package ru.kutu.grind.config  {
 	
 	public class GrindConfig implements IConfig {
 		
-		[Inject] public var injector:Injector;
+		[Inject] public var injector:IInjector;
 		[Inject] public var context:IContext;
 		
 		public function configure():void {

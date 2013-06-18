@@ -6,6 +6,7 @@ package ru.kutu.grind.views.mediators {
 	import org.osmf.media.MediaPlayerState;
 	
 	import robotlegs.bender.extensions.contextView.ContextView;
+	import robotlegs.bender.framework.api.IInjector;
 	
 	import ru.kutu.grind.config.PlayerConfiguration;
 	import ru.kutu.grind.events.AutoHideEvent;
@@ -13,7 +14,7 @@ package ru.kutu.grind.views.mediators {
 
 	public class ControlBarBaseMediator extends MediaControlBaseMediator {
 
-		[Inject] public var injector:Injector;
+		[Inject] public var injector:IInjector;
 		[Inject] public var contextView:ContextView;
 		[Inject] public var view:IControlBarView;
 

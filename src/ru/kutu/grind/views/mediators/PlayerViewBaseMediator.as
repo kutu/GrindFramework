@@ -17,10 +17,10 @@ package ru.kutu.grind.views.mediators  {
 	import org.osmf.player.configuration.ConfigurationLoader;
 	import org.osmf.player.plugins.PluginLoader;
 	import org.osmf.utils.OSMFSettings;
-	import org.swiftsuspenders.Injector;
 	
 	import robotlegs.bender.bundles.mvcs.Mediator;
 	import robotlegs.bender.extensions.contextView.ContextView;
+	import robotlegs.bender.framework.api.IInjector;
 	import robotlegs.bender.framework.api.ILogger;
 	
 	import ru.kutu.grind.config.JavaScriptBridgeBase;
@@ -32,7 +32,7 @@ package ru.kutu.grind.views.mediators  {
 	public class PlayerViewBaseMediator extends Mediator {
 
 		[Inject] public var logger:ILogger;
-		[Inject] public var injector:Injector;
+		[Inject] public var injector:IInjector;
 		[Inject] public var contextView:ContextView;
 		[Inject] public var view:IPlayerView;
 		[Inject] public var configuration:PlayerConfiguration;
