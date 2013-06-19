@@ -8,6 +8,8 @@ package ru.kutu.grind.views.mediators {
 	import org.osmf.layout.LayoutMetadata;
 	import org.osmf.layout.ScaleMode;
 	import org.osmf.net.StreamType;
+	import org.osmf.traits.DVRTrait;
+	import org.osmf.traits.MediaTraitType;
 	
 	import robotlegs.bender.extensions.contextView.ContextView;
 	
@@ -37,7 +39,11 @@ package ru.kutu.grind.views.mediators {
 				var streamType:String = (player as GrindMediaPlayerBase).streamType;
 			}
 			// only if streamType is recorded
-			if (!streamType || streamType == StreamType.LIVE_OR_RECORDED || streamType == StreamType.RECORDED) {
+			if (!streamType ||
+				streamType == StreamType.LIVE_OR_RECORDED ||
+				streamType == StreamType.RECORDED ||
+				(streamType == StreamType.DVR && !(media.getTrait(MediaTraitType.DVR) as DVRTrait).isRecording)
+			) {
 				if (player.playing) {
 					if (player.canPause)
 						player.pause();
