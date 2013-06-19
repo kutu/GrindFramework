@@ -44,7 +44,6 @@ package ru.kutu.grind.views.mediators {
 		}
 		
 		override protected function processMediaElementChange(oldMediaElement:MediaElement):void {
-			super.processMediaElementChange(oldMediaElement);
 			totalBytes = loadedBytes = NaN;
 		}
 		

@@ -9,9 +9,7 @@ package ru.kutu.grind.views.mediators {
 	import flash.utils.Timer;
 	
 	import org.osmf.events.MediaPlayerStateChangeEvent;
-	import org.osmf.events.MetadataEvent;
 	import org.osmf.events.PlayEvent;
-	import org.osmf.media.MediaElement;
 	import org.osmf.media.MediaPlayerState;
 	import org.osmf.traits.PlayState;
 	
@@ -36,7 +34,6 @@ package ru.kutu.grind.views.mediators {
 		protected var isFullScreen:Boolean;
 		protected var isAutoHideComplete:Boolean;
 		protected var hasWaitTarget:Boolean;
-		protected var isAdvertisement:Boolean;
 		
 		protected var waitTargets:Dictionary = new Dictionary(true);
 		
@@ -67,19 +64,6 @@ package ru.kutu.grind.views.mediators {
 			addContextListener(AutoHideEvent.FORGET_ME, onForgetTarget, AutoHideEvent);
 			
 			onMediaPlayerStateChange();
-		}
-		
-		override protected function processMediaElementChange(oldMediaElement:MediaElement):void {
-			if (oldMediaElement) {
-				oldMediaElement.metadata.removeEventListener(MetadataEvent.VALUE_ADD, onMetadataChange);
-				oldMediaElement.metadata.removeEventListener(MetadataEvent.VALUE_CHANGE, onMetadataChange);
-				oldMediaElement.metadata.removeEventListener(MetadataEvent.VALUE_REMOVE, onMetadataChange);
-			}
-			if (media) {
-				media.metadata.addEventListener(MetadataEvent.VALUE_ADD, onMetadataChange);
-				media.metadata.addEventListener(MetadataEvent.VALUE_CHANGE, onMetadataChange);
-				media.metadata.addEventListener(MetadataEvent.VALUE_REMOVE, onMetadataChange);
-			}
 		}
 		
 		protected function set visible(value:Boolean):void {
@@ -158,24 +142,16 @@ package ru.kutu.grind.views.mediators {
 			checkVisibility();
 		}
 		
-		protected function onMetadataChange(event:MetadataEvent):void {
-			if (event.key != "Advertisement") return;
-			isAdvertisement = event.type != MetadataEvent.VALUE_REMOVE;
-			checkVisibility();
-		}
-		
 		protected function onRepeatPlease(event:AutoHideEvent = null):void {
 			dispatchShowHideEvent();
 		}
 		
 		protected function checkVisibility():void {
-//			trace(isReady, isFullScreen, isMouseMove, isMouseLeave, isAutoHideComplete, isPlaying, isAdvertisement, hasWaitTarget);
-			
 			visible =
 				isReady
 				&&
 				(
-					(!isPlaying && !isAdvertisement)
+					!isPlaying
 					||
 					hasWaitTarget
 					||
