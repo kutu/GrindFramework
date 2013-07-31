@@ -63,6 +63,7 @@ package ru.kutu.grind.views.mediators {
 		
 		protected function onKeyDown(event:KeyboardEvent):void {
 			switch (event.keyCode) {
+				// volume up
 				case Keyboard.UP:
 					if (player.muted) {
 						player.muted = false;
@@ -71,6 +72,8 @@ package ru.kutu.grind.views.mediators {
 						player.volume = (Math.round(player.volume * 10) + 1) * .1;
 					}
 					break;
+				
+				// volume down
 				case Keyboard.DOWN:
 					if (!player.muted) {
 						player.volume = (Math.round(player.volume * 10) - 1) * .1;

@@ -32,14 +32,12 @@ package ru.kutu.grind.config {
 	import org.osmf.net.NetStreamCodes;
 	
 	import robotlegs.bender.extensions.localEventMap.api.IEventMap;
-	import robotlegs.bender.framework.api.ILogger;
 	
 	import ru.kutu.grind.events.LoadMediaEvent;
 	import ru.kutu.grind.events.MediaElementChangeEvent;
 
 	public class JavaScriptBridgeBase {
 
-		[Inject] public var logger:ILogger;
 		[Inject] public var eventMap:IEventMap;
 		[Inject] public var eventDispatcher:IEventDispatcher;
 		[Inject] public var player:MediaPlayer;
@@ -58,7 +56,6 @@ package ru.kutu.grind.config {
 			"org.osmf.media::MediaElement"
 			, "flash.display::DisplayObject"
 			, "ru.kutu.grind.config::PlayerConfiguration"
-			, "robotlegs.bender.extensions.localEventMap.api::IEventMap"
 			, "flash.events::IEventDispatcher"
 		];
 		protected var methodBlackList:Array = [
