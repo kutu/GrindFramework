@@ -471,7 +471,7 @@ package org.osmf.net.httpstreaming
 			}
 			
 			// failover enhancement
-			if (!(event is SecurityErrorEvent)) {
+			if (!(event is SecurityErrorEvent) && _request && _dispatcher) {
 				if (OSMFSettings.hdsMaximumRetries > -1) {
 					_currentRetry++;
 				}
@@ -480,9 +480,7 @@ package org.osmf.net.httpstreaming
 						logger.error("Error while trying to download [" + _request.url + "]");
 						logger.error("Retrying the download.");
 					}
-					if (_request && _dispatcher) {
-						_retryTimeout = setTimeout(open, 1000, _request, _dispatcher, _timeoutInterval);
-					}
+					_retryTimeout = setTimeout(open, 1000, _request, _dispatcher, _timeoutInterval);
 					return;
 				}
 			}
