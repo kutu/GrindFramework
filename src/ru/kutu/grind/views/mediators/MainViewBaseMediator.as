@@ -50,14 +50,22 @@ package ru.kutu.grind.views.mediators  {
 		}
 		
 		protected function onMediaError(event:MediaErrorEvent):void {
-			view.errorText = [
-				"Error:",
-				event.error.message,
-				event.error.detail
-			].join("\n");
+			var arr:Array = [];
+			if (event.error) {
+				if (event.error.message) {
+					arr.push("Message: " + event.error.message);
+				}
+				if (event.error.detail) {
+					arr.push("Detail: " + event.error.detail);
+				}
+			}
+			
+			var message:String = arr.join("\n");
+			
+			view.errorText = "Error:\n" + message;
 			
 			CONFIG::LOGGING {
-				logger.error(event.error);
+				logger.error("onMediaError:\n{0}", [message]);
 			}
 		}
 		
@@ -74,7 +82,7 @@ package ru.kutu.grind.views.mediators  {
 			}
 			
 			CONFIG::LOGGING {
-				logger.error(message);
+				logger.error("onUncaughtError: {0}", [message]);
 			}
 		}
 		
