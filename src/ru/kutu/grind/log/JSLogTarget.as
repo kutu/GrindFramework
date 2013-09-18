@@ -12,7 +12,11 @@ package ru.kutu.grind.log {
 		
 		public function log(source:Object, level:uint, timestamp:int, message:String, params:Array=null):void {
 			if (ExternalInterface.available) {
-				ExternalInterface.call("console.log",
+				ExternalInterface.call(
+					level == LogLevel.DEBUG ? "console.debug" :
+					level == LogLevel.INFO ? "console.info" :
+					"console.warn"
+					,
 					[
 						timestamp
 						, LogLevel.NAME[level]
