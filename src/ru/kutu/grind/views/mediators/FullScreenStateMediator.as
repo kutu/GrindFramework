@@ -18,7 +18,7 @@ package ru.kutu.grind.views.mediators {
 			view.fullScreen = contextView.view.stage.displayState != StageDisplayState.NORMAL;
 		}
 		
-		private function onFullScreen(event:FullScreenEvent):void {
+		protected function onFullScreen(event:FullScreenEvent):void {
 			view.fullScreen = event.fullScreen;
 		}
 		

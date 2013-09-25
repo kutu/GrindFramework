@@ -21,8 +21,8 @@ package ru.kutu.grind.views.mediators {
 		[Inject] public var view:IQualityMenuButton;
 		[Inject] public var ls:LocalSettings;
 		
-		private var dynamicTrait:DynamicStreamTrait;
-		private var streamItems:Vector.<DynamicStreamingItem>;
+		protected var dynamicTrait:DynamicStreamTrait;
+		protected var streamItems:Vector.<DynamicStreamingItem>;
 		
 		private var _requiredTraits:Vector.<String> = new <String>[MediaTraitType.DYNAMIC_STREAM];
 		

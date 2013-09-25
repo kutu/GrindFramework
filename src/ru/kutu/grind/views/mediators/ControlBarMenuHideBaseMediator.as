@@ -17,15 +17,15 @@ package ru.kutu.grind.views.mediators {
 			addViewListener(ControlBarMenuEvent.DROPDOWN_CLOSE, onDropDownClose, ControlBarMenuEvent);
 		}
 		
-		private function onAutoHide(event:AutoHideEvent):void {
+		protected function onAutoHide(event:AutoHideEvent):void {
 			view.closeDropDown(false);
 		}
 		
-		private function onDropDownOpen(event:ControlBarMenuEvent):void {
+		protected function onDropDownOpen(event:ControlBarMenuEvent):void {
 			dispatch(new AutoHideEvent(AutoHideEvent.WAIT_ME, String(view)));
 		}
 		
-		private function onDropDownClose(event:ControlBarMenuEvent):void {
+		protected function onDropDownClose(event:ControlBarMenuEvent):void {
 			dispatch(new AutoHideEvent(AutoHideEvent.FORGET_ME, String(view)));
 		}
 		

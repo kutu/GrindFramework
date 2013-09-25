@@ -8,6 +8,7 @@ package ru.kutu.grind.views.mediators {
 	import org.osmf.media.MediaElement;
 	
 	import robotlegs.bender.extensions.contextView.ContextView;
+	import robotlegs.bender.framework.api.IInjector;
 	
 	import ru.kutu.grind.events.AutoHideEvent;
 	import ru.kutu.grind.events.ScrubBarEvent;
@@ -18,18 +19,19 @@ package ru.kutu.grind.views.mediators {
 	
 	public class ScrubBarTipBaseMediator extends MediaControlBaseMediator {
 		
+		[Inject] public var injector:IInjector;
 		[Inject] public var contextView:ContextView;
 		[Inject] public var view:IScrubBarTip;
 		[Inject] public var scrubBar:IScrubBar;
 		
-		private var thumbnails:Thumbnails;
+		protected var thumbnails:Thumbnails;
 		
-		private var isMouseOverTrack:Boolean;
-		private var mouseMovePending:Boolean;
-		private var mostRecentTrackPoint:Point = new Point();
+		protected var isMouseOverTrack:Boolean;
+		protected var mouseMovePending:Boolean;
+		protected var mostRecentTrackPoint:Point = new Point();
 		
-		private var isTipVisible:Boolean;
-		private var hasThumbnails:Boolean;
+		protected var isTipVisible:Boolean;
+		protected var hasThumbnails:Boolean;
 		
 		override public function initialize():void {
 			super.initialize();
@@ -58,7 +60,7 @@ package ru.kutu.grind.views.mediators {
 			
 			if (data && data.url) {
 				if (!thumbnails) {
-					thumbnails = new Thumbnails();
+					thumbnails = injector.getInstance(Thumbnails);
 					thumbnails.addEventListener(Event.COMPLETE, onThumbnailsComplete);
 				}
 				const w:Number = data.width;

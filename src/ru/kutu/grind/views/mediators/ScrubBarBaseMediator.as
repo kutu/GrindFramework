@@ -27,6 +27,10 @@ package ru.kutu.grind.views.mediators {
 		
 		private var _requiredTraits:Vector.<String> = new <String>[MediaTraitType.TIME, MediaTraitType.SEEK];
 		
+		override protected function get requiredTraits():Vector.<String> {
+			return _requiredTraits;
+		}
+		
 		override public function initialize():void {
 			super.initialize();
 			updateEnabled();
@@ -61,10 +65,6 @@ package ru.kutu.grind.views.mediators {
 			}
 			isStartPlaying = event.state == MediaPlayerState.PLAYING;
 			updateEnabled();
-		}
-		
-		override protected function get requiredTraits():Vector.<String> {
-			return _requiredTraits;
 		}
 		
 		override protected function onStreamTypeChange(streamType:String):void {

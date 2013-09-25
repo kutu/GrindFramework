@@ -18,6 +18,10 @@ package ru.kutu.grind.views.mediators {
 		
 		private var _requiredTraits:Vector.<String> = new <String>[MediaTraitType.AUDIO];
 		
+		override protected function get requiredTraits():Vector.<String> {
+			return _requiredTraits;
+		}
+		
 		override public function initialize():void {
 			super.initialize();
 			player.volume = ls.volume;
@@ -29,10 +33,6 @@ package ru.kutu.grind.views.mediators {
 			addViewListener(VolumeComponentEvent.SLIDER_CHANGE_END, onSliderChangeEnd, VolumeComponentEvent);
 			addViewListener(VolumeComponentEvent.SLIDER_CHANGE, onSliderChange, VolumeComponentEvent);
 			updateVolumeSlider();
-		}
-		
-		override protected function get requiredTraits():Vector.<String> {
-			return _requiredTraits;
 		}
 		
 		override protected function processRequiredTraitsAvailable(element:MediaElement):void {

@@ -64,11 +64,11 @@ package ru.kutu.grind.views.mediators {
 			}
 		}
 
-		private function onAutoShow(event:AutoHideEvent):void {
+		protected function onAutoShow(event:AutoHideEvent):void {
 			view.shown = true;
 		}
 
-		private function onAutoHide(event:AutoHideEvent):void {
+		protected function onAutoHide(event:AutoHideEvent):void {
 			if (
 				(isFullScreen && fullScreenAutoHide)
 				||

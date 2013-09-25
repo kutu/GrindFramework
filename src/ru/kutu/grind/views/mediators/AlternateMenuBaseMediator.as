@@ -19,7 +19,7 @@ package ru.kutu.grind.views.mediators {
 		
 		[Inject] public var view:IAlternateMenuButton;
 		
-		private var alternateTrait:AlternativeAudioTrait;
+		protected var alternateTrait:AlternativeAudioTrait;
 		
 		private var _requiredTraits:Vector.<String> = new <String>[MediaTraitType.ALTERNATIVE_AUDIO];
 		

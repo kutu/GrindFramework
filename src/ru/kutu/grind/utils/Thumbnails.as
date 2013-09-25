@@ -16,17 +16,17 @@ package ru.kutu.grind.utils {
 		
 		public static const NAMESPACE:String = "thumbnails";
 		
-		private var thumbnail:Bitmap;
-		private var req:URLRequest;
-		private var context:LoaderContext;
-		private var thumbnailsLoader:Loader;
-		private var thumbnailsImage:BitmapData;
-		private var loadAttempts:uint;
+		protected static const ZERO_POINT:Point = new Point();
 		
-		private var totalImages:int;
-		private var prevIndex:int;
+		protected var thumbnail:Bitmap;
+		protected var req:URLRequest;
+		protected var context:LoaderContext;
+		protected var thumbnailsLoader:Loader;
+		protected var thumbnailsImage:BitmapData;
+		protected var loadAttempts:uint;
 		
-		private var zeroPoint:Point = new Point();
+		protected var totalImages:int;
+		protected var prevIndex:int;
 		
 		public function Thumbnails() {
 			context = new LoaderContext(true, ApplicationDomain.currentDomain);
@@ -72,10 +72,10 @@ package ru.kutu.grind.utils {
 			var xIndex:uint = index % widthCount;
 			var yIndex:uint = index / widthCount;
 			var rect:Rectangle = new Rectangle(xIndex * w, yIndex * h, w, h);
-			thumbnail.bitmapData.copyPixels(thumbnailsImage, rect, zeroPoint);
+			thumbnail.bitmapData.copyPixels(thumbnailsImage, rect, ZERO_POINT);
 		}
 		
-		private function loadThumnails():void {
+		protected function loadThumnails():void {
 			if (!req) return;
 			try {
 				thumbnailsLoader.close();
@@ -83,7 +83,7 @@ package ru.kutu.grind.utils {
 			thumbnailsLoader.load(req, context);
 		}
 		
-		private function onThumbnailsLoaded(event:Event):void {
+		protected function onThumbnailsLoaded(event:Event):void {
 			thumbnailsLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onThumbnailsLoaded);
 			thumbnailsLoader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, onThumbnailsError);
 			thumbnailsImage = (thumbnailsLoader.content as Bitmap).bitmapData.clone();
@@ -92,7 +92,7 @@ package ru.kutu.grind.utils {
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
 		
-		private function onThumbnailsError(event:IOErrorEvent):void {
+		protected function onThumbnailsError(event:IOErrorEvent):void {
 			if (--loadAttempts) {
 				loadThumnails();
 			}

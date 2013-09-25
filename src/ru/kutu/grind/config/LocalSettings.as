@@ -16,10 +16,7 @@ package ru.kutu.grind.config {
 		
 		[Inject] public var logger:ILogger;
 		
-		protected const LSO_NAME:String = "grindPlayer";
-		
-		protected const lso:SharedObject = SharedObject.getLocal(LSO_NAME, "/");
-		
+		protected var lso:SharedObject;
 		protected var saveSettingsTimer:Timer;
 		
 		protected var _volume:Number = 1.0;
@@ -32,6 +29,7 @@ package ru.kutu.grind.config {
 		public function LocalSettings() {
 			saveSettingsTimer = new Timer(1000, 1);
 			saveSettingsTimer.addEventListener(TimerEvent.TIMER, onSaveSettingsTimer);
+			initLSO();
 			loadSettings();
 		}
 		
@@ -75,6 +73,10 @@ package ru.kutu.grind.config {
 			_qualityAutoSwitch = value;
 			lso.data[QUALITY_AUTO_SWITCH] = value;
 			flushSettings();
+		}
+		
+		protected function initLSO():void {
+			lso = SharedObject.getLocal("grindPlayer", "/");
 		}
 		
 		protected function loadSettings():void {
