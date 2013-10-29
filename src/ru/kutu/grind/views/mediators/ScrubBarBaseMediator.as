@@ -8,6 +8,7 @@ package ru.kutu.grind.views.mediators {
 	import org.osmf.media.MediaPlayerState;
 	import org.osmf.net.StreamType;
 	import org.osmf.traits.MediaTraitType;
+	import org.osmf.traits.TimeTrait;
 	
 	import robotlegs.bender.extensions.mediatorMap.api.IMediatorMap;
 	
@@ -100,6 +101,17 @@ package ru.kutu.grind.views.mediators {
 			loadedBytes = event.bytes;
 			if (isNaN(totalBytes) || totalBytes <= 0 || isNaN(loadedBytes)) return;
 			view.percentLoaded = event.bytes / totalBytes;
+			
+			// offset for pseudo streaming
+			if (media.hasTrait(MediaTraitType.TIME)) {
+				var timeTrait:TimeTrait = media.getTrait(MediaTraitType.TIME) as TimeTrait;
+				if ("startPositionOffset" in timeTrait) {
+					var startPositionOffset:Number = timeTrait["startPositionOffset"];
+					if (!isNaN(startPositionOffset)) {
+						view.percentLoaded += startPositionOffset / view.maximum;
+					}
+				}
+			}
 		}
 		
 		protected function onSliderChangeStart(event:ScrubBarEvent):void {
