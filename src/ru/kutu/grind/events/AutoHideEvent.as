@@ -13,14 +13,14 @@ package ru.kutu.grind.events {
 		private var _hideTarget:String;
 
 		public function AutoHideEvent(type:String, hideTarget:String = null, bubbles:Boolean = false, cancelable:Boolean = false) {
-			_hideTarget = hideTarget;
 			super(type, bubbles, cancelable);
+			_hideTarget = hideTarget;
 		}
 
 		public function get hideTarget():String { return _hideTarget }
 
 		override public function clone():Event {
-			return new AutoHideEvent(_hideTarget, type, bubbles, cancelable);
+			return new AutoHideEvent(type, _hideTarget, bubbles, cancelable);
 		}
 
 		override public function toString():String {
