@@ -57,6 +57,9 @@ package ru.kutu.grind.media {
 				for each (traitType  in media.traitTypes) {
 					updateTraitListenersBase(traitType, true);
 				}
+				if (media.metadata && !media.metadata.getValue("org.osmf.player.metadata.MediaMetadata")) {
+					media.metadata.addValue("org.osmf.player.metadata.MediaMetadata", {resourceMetadata:{}});
+				}
 			}
 			
 			eventDispatcher.dispatchEvent(new MediaElementChangeEvent(MediaElementChangeEvent.MEDIA_ELEMENT_CHANGED));

@@ -56,7 +56,14 @@ package ru.kutu.grind.views.mediators {
 			if (!media) return;
 			
 			var dynamicResource:DynamicStreamingResource = MediaElementUtils.getResourceFromParentOfType(media, DynamicStreamingResource) as DynamicStreamingResource;
-			streamItems = dynamicResource.streamItems;
+			if (dynamicResource) {
+				streamItems = dynamicResource.streamItems;
+			} else if (dynamicTrait.numDynamicStreams) {
+				streamItems = new <DynamicStreamingItem>[];
+				for (var i:int = 0; i < dynamicTrait.numDynamicStreams; ++i) {
+					streamItems.push(new DynamicStreamingItem(null, dynamicTrait.getBitrateForIndex(i)));
+				}
+			}
 			
 			// extract bitrate and height
 			var items:Array = new Array();
@@ -90,7 +97,9 @@ package ru.kutu.grind.views.mediators {
 			super.onNumStreamChange();
 			
 			if (!player.autoDynamicStreamSwitch) {
-				var vo:SelectorVO = getSelectorVOByIndex(dynamicResource.initialIndex);
+				if (dynamicResource) {
+					var vo:SelectorVO = getSelectorVOByIndex(dynamicResource.initialIndex);
+				}
 				if (vo) {
 					view.selectedIndex = selectors.indexOf(vo);
 				}
@@ -178,6 +187,7 @@ package ru.kutu.grind.views.mediators {
 						minDiffHeight = Math.abs(preferHeight - h);
 						preferIndex = streamItems.indexOf(dynamicItem);
 					}
+					if (minDiffHeight == 0) break;
 				}
 			}
 			
@@ -203,8 +213,10 @@ package ru.kutu.grind.views.mediators {
 			
 			// switch to prefer index and set autoSwitch mode
 			var autoSwitch:Boolean = ls.qualityAutoSwitch;
-			if (preferIndex != -1 && preferIndex != dynamicResource.initialIndex) {
-				dynamicResource.initialIndex = preferIndex;
+			if (preferIndex != -1) {
+				if (dynamicResource && preferIndex != dynamicResource.initialIndex) {
+					dynamicResource.initialIndex = preferIndex;
+				}
 				player.autoDynamicStreamSwitch = false;
 				player.switchDynamicStreamIndex(preferIndex);
 			}
