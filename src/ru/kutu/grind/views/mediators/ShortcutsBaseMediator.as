@@ -25,6 +25,8 @@ package ru.kutu.grind.views.mediators {
 		[Inject] public var configuration:PlayerConfiguration;
 		
 		protected var dblClickTime:Number;
+		protected var isShift:Boolean;
+		protected var isCtrl:Boolean;
 		
 		override public function initialize():void {
 			super.initialize();
@@ -82,6 +84,26 @@ package ru.kutu.grind.views.mediators {
 						}
 					}
 					break;
+				
+				// seek
+				case Keyboard.LEFT:
+				case Keyboard.RIGHT:
+					var seekDuration:Number = isShift ? 5 : isCtrl ? 60 : 10;
+					var seekTo:Number = player.currentTime + (event.keyCode == Keyboard.RIGHT ? 1.0 : -1.0) * seekDuration;
+					if (seekTo < 0) seekTo = 0;
+					if (!isNaN(player.duration) && seekTo > player.duration) seekTo = player.duration - 5.0;
+					if (player.canSeek && !player.seeking && player.canSeekTo(seekTo)) {
+						player.seek(seekTo);
+					}
+					break;
+				
+				case Keyboard.SHIFT:
+					isShift = true;
+					break;
+				
+				case Keyboard.CONTROL:
+					isCtrl = true;
+					break;
 			}
 		}
 		
@@ -117,6 +139,14 @@ package ru.kutu.grind.views.mediators {
 						var i:int = scaleModes.indexOf(gmp.scaleMode);
 						gmp.scaleMode = i == -1 ? scaleModes[0] : scaleModes[++i % scaleModes.length];
 					}
+					break;
+				
+				case Keyboard.SHIFT:
+					isShift = false;
+					break;
+				
+				case Keyboard.CONTROL:
+					isCtrl = false;
 					break;
 			}
 		}
