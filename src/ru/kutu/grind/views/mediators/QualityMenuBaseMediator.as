@@ -172,44 +172,25 @@ package ru.kutu.grind.views.mediators {
 			var dynamicResource:DynamicStreamingResource = MediaElementUtils.getResourceFromParentOfType(media, DynamicStreamingResource) as DynamicStreamingResource;
 			var dynamicItem:DynamicStreamingItem;
 			
-			// find prefer height
 			var preferHeight:int = ls.qualityPreferHeight;
-			var preferIndex:int = -1;
-			if (preferHeight > 0) {
-				var minDiffHeight:int = int.MAX_VALUE;
-				for each (dynamicItem in streamItems) {
-					var h:int = dynamicItem.height;
-					if (h <= 0) {
-						preferIndex = -1;
-						break;
-					}
-					if (Math.abs(preferHeight - h) < minDiffHeight) {
-						minDiffHeight = Math.abs(preferHeight - h);
-						preferIndex = streamItems.indexOf(dynamicItem);
-					}
-					if (minDiffHeight == 0) break;
-				}
+			var preferBitrate:Number = ls.qualityPreferBitrate;
+			var maxHeight:int;
+			var maxBitrate:Number = 0.0;
+			var preferItems:Vector.<DynamicStreamingItem> = new <DynamicStreamingItem>[];
+			
+			for each (dynamicItem in streamItems) {
+				maxHeight = Math.max(maxHeight, dynamicItem.height);
+				maxBitrate = Math.max(maxBitrate, dynamicItem.bitrate);
+				preferItems.push(dynamicItem);
 			}
 			
-			// if not have prefer height
-			if (preferIndex == -1) {
-				// find prefer bitrate
-				var preferBitrate:Number = ls.qualityPreferBitrate;
-				if (!isNaN(preferBitrate) && preferBitrate > 0) {
-					var minDiffBitrate:Number = Number.MAX_VALUE;
-					for each (dynamicItem in streamItems) {
-						var br:Number = dynamicItem.bitrate;
-						if (br <= 0) {
-							preferIndex = -1;
-							break;
-						}
-						if (Math.abs(preferBitrate - br) < minDiffBitrate) {
-							minDiffBitrate = Math.abs(preferBitrate - br);
-							preferIndex = streamItems.indexOf(dynamicItem);
-						}
-					}
-				}
-			}
+			preferItems.sort(function(a:DynamicStreamingItem, b:DynamicStreamingItem):int {
+				var av:Number = (maxHeight > 0 ? a.height / maxHeight : 0) + (maxBitrate > 0 ? a.bitrate / maxBitrate : 0);
+				var bv:Number = (maxHeight > 0 ? b.height / maxHeight : 0) + (maxBitrate > 0 ? b.bitrate / maxBitrate : 0);
+				return av - bv;
+			});
+			
+			var preferIndex:int = streamItems.indexOf(preferItems[preferItems.length - 1]);
 			
 			// switch to prefer index and set autoSwitch mode
 			var autoSwitch:Boolean = ls.qualityAutoSwitch;
