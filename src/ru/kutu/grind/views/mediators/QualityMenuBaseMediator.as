@@ -176,6 +176,7 @@ package ru.kutu.grind.views.mediators {
 			var preferBitrate:Number = ls.qualityPreferBitrate;
 			var maxHeight:int;
 			var maxBitrate:Number = 0.0;
+			var preferIndex:int = -1;
 			var preferItems:Vector.<DynamicStreamingItem> = new <DynamicStreamingItem>[];
 			
 			for each (dynamicItem in streamItems) {
@@ -184,13 +185,18 @@ package ru.kutu.grind.views.mediators {
 				preferItems.push(dynamicItem);
 			}
 			
-			preferItems.sort(function(a:DynamicStreamingItem, b:DynamicStreamingItem):int {
-				var av:Number = (maxHeight > 0 ? a.height / maxHeight : 0) + (maxBitrate > 0 ? a.bitrate / maxBitrate : 0);
-				var bv:Number = (maxHeight > 0 ? b.height / maxHeight : 0) + (maxBitrate > 0 ? b.bitrate / maxBitrate : 0);
-				return av - bv;
-			});
+			var checkHeight:Boolean = maxHeight > 0 && preferHeight > 0;
+			var checkBitrate:Boolean = maxBitrate > 0 && preferBitrate > 0;
 			
-			var preferIndex:int = streamItems.indexOf(preferItems[preferItems.length - 1]);
+			if (checkHeight || checkBitrate) {
+				var pv:Number = (checkHeight ? preferHeight / maxHeight : 0) + (checkBitrate ? preferBitrate / maxBitrate : 0);
+				preferItems.sort(function(a:DynamicStreamingItem, b:DynamicStreamingItem):int {
+					var av:Number = Math.abs(pv - ((checkHeight ? a.height / maxHeight : 0) + (checkBitrate ? a.bitrate / maxBitrate : 0)));
+					var bv:Number = Math.abs(pv - ((checkHeight ? b.height / maxHeight : 0) + (checkBitrate ? b.bitrate / maxBitrate : 0)));
+					return av > bv ? 1 : av < bv ? -1 : 0;
+				});
+				preferIndex = streamItems.indexOf(preferItems[0]);
+			}
 			
 			// switch to prefer index and set autoSwitch mode
 			var autoSwitch:Boolean = ls.qualityAutoSwitch;
