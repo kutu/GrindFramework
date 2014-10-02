@@ -49,6 +49,8 @@ package ru.kutu.grind.views.mediators {
 			if (configuration.controlBarAutoHideTimeout > 0) {
 				autoHideTimer = new Timer(configuration.controlBarAutoHideTimeout * 1000, 1);
 				autoHideTimer.addEventListener(TimerEvent.TIMER, onAutoHideTimer);
+			} else {
+				return;
 			}
 			
 			contextView.view.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);

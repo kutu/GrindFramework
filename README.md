@@ -8,5 +8,5 @@ This framework is part of [Grind Player](https://github.com/kutu/GrindPlayer) pr
 
 # Dependencies
 
-- [Robotlegs Framework 2.1 &rarr;](http://www.robotlegs.org/)
+- [Robotlegs Framework 2 &rarr;](http://www.robotlegs.org/)
 - [Blooddy Crypto Library &rarr;](http://www.blooddy.by/crypto/)
